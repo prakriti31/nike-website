@@ -10,10 +10,22 @@ connectDB();
 
 // Middlewares
 app.use(express.json());
+// CORS configuration to allow both origins
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5001'];
+
 app.use(cors({
-    origin: 'http://localhost:3000', // your React client URL
+    origin: function(origin, callback) {
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
 
 // Express session middleware
 app.use(session({
@@ -26,5 +38,5 @@ app.use(session({
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

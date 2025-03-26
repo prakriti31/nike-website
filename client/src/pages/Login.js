@@ -33,7 +33,7 @@ const Login = ({ setUser }) => {
         if (!validateForm()) return;
 
         try {
-            const res = await axios.post('http://localhost:5000/api/auth/login', formData, { withCredentials: true });
+            const res = await axios.post('http://localhost:5001/api/auth/login', formData, { withCredentials: true });
             if (res.data && res.data.user) {
                 setUser(res.data.user);
                 navigate('/');
