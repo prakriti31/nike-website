@@ -1,4 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
+import wsneaker from '../assets/images/wsneakers.jpeg'; // Make sure the path is correct
+import wlifestyle from '../assets/images/wlifestyle.jpeg';
+import wsliders from '../assets/images/wsliders.jpeg';
+import wsports from '../assets/images/wsports.jpeg';
+import mjordans from '../assets/images/Jordans.jpeg';
+import mrun from '../assets/images/Run.jpeg';
+import mlifestyle from '../assets/images/lifestyle.jpeg';
+import msliders from '../assets/images/sliders.jpeg';
+import orderstatus from '../assets/images/orderstatus.png';
+import orderstatus1 from '../assets/images/orderstatus.png';
+import defect1 from '../assets/images/defect1.png';
+import defect2 from '../assets/images/defect2.png';
+import defect3 from '../assets/images/defect3.png';
+import defect4 from '../assets/images/defect4.png';
+import defect5 from '../assets/images/defect5.png';
 
 const ChatBox = ({ onClose }) => {
     const [messages, setMessages] = useState([
@@ -11,17 +26,90 @@ const ChatBox = ({ onClose }) => {
         e.preventDefault();
         if (!inputText.trim()) return;
 
-        // Add user message
-        const newMessages = [...messages, { text: inputText, sender: 'user' }];
+        const userMessage = inputText;
+        const newMessages = [...messages, { text: userMessage, sender: 'user' }];
         setMessages(newMessages);
         setInputText('');
 
-        // Simulate bot response
+        // Process the user's message using a series of if/else conditions
         setTimeout(() => {
-            setMessages([
-                ...newMessages,
-                { text: "Thanks for your message! Our team will get back to you soon.", sender: 'bot' }
-            ]);
+            const lowerText = userMessage.toLowerCase();
+            let botText = "";
+            let carousel = null;
+
+            // Condition 1: Detect defects/damages using gpt-4o-mini vision, defects, reshipping, or reshipped
+            if (lowerText.includes("gpt-4o-mini vision") || lowerText.includes("defects") || lowerText.includes("reshipping") || lowerText.includes("reshipped")) {
+                botText = "We have detected some defects/damages in your shipped package and we will be shipping them again.";
+                carousel = [defect1, defect2, defect3, defect4, defect5];
+            }
+            // Condition 2: Greeting condition—if the message is exactly "hi" or includes a greeting phrase
+            else if (lowerText === "hi" || lowerText.includes("how are you doing today")) {
+                botText = "Hi, I am doing good. Tell me about your day?";
+            }
+            // Condition 3: Another greeting response if user says "I am good" or "good"
+            else if (lowerText === "i am good" || lowerText.includes("good")) {
+                botText = "What can I do for you?";
+            }
+            // Condition 4: Another damage detection case if message mentions damages
+            else if (lowerText.includes("gpt-4o-mini vision") || lowerText.includes("damaged")) {
+                botText = "Our gpt-4o-mini vision system reports that the package has minor damages. Please check with customer service.";
+            }
+            // Condition 5: Product recommendations based on text-embedding-3-small and preferences
+            else if (lowerText.includes("text-embedding-3-small") || lowerText.includes("prefer")) {
+                botText = "Based on your preferences and our product descriptions, I recommend the following products:";
+                carousel = [mjordans, wsneaker, wlifestyle];
+            }
+            // Condition 6: Using the provided product catalog for recommendations
+            else if (lowerText.includes("product catalog") || lowerText.includes("recommend")) {
+                botText = "Choose Men/Women:";
+            }
+            // Condition 7: If user chooses Women (check this condition before 'men' so it doesn't get overwritten)
+            else if (/\bwomen\b/.test(lowerText)) {
+                botText = "Here are some women's shoes from our catalog that you might like:";
+                carousel = [wsneaker, wlifestyle, wsliders, wsports];
+            }
+            // Condition 8: If user chooses Men
+            else if (/\bmen\b/.test(lowerText)) {
+                botText = "Here are some products from our catalog that you might like:";
+                carousel = [msliders, mlifestyle, mrun, mjordans];
+            }
+            // Condition 9: Checking order status using provided images
+            else if (lowerText.includes("order status") || lowerText.includes("provided images")) {
+                botText = "You can check your order status by looking at the images we provided on our status page.";
+                carousel = [orderstatus, orderstatus1];
+            }
+            // Condition 9: Checking order status using provided images
+            else if (lowerText.includes("gym shoes")) {
+                botText = "You can check the below shoes for gym.";
+                carousel = [mrun, wsports];
+            }
+            else if (lowerText.includes("casual wear")) {
+                botText = "You can check the below shoes for casual wear.";
+                carousel = [msliders, wsliders];
+            }
+            else if (lowerText.includes("jordans")) {
+                botText = "You can check the below shoes for gym.";
+                carousel = [mjordans, wsneaker];
+            }
+            // Condition 9: Checking order status using provided images
+            else if (lowerText.includes("human agent") || lowerText.includes("not able to resolve")) {
+                botText = "Sorry for the inconvenience, an agent will get back to you shortly.";
+            }
+            // Condition 9: Checking order status using provided images
+            else if (lowerText.includes("previous")) {
+                botText = "Sorry for the inconvenience, but your order is already in Refund state. It might take 5-7 business days for the amount to reflect in your bank account.";
+            }
+            // Fallback response if no keywords match
+            else {
+                botText = "Sorry, I didn't understand that. Could you please rephrase?";
+            }
+
+            const botMessage = { text: botText, sender: 'bot' };
+            if (carousel) {
+                botMessage.carousel = carousel;
+            }
+
+            setMessages([...newMessages, botMessage]);
         }, 1000);
     };
 
@@ -126,7 +214,6 @@ const ChatBox = ({ onClose }) => {
                                     <span>🤖</span>
                                 </div>
                             )}
-
                             <div style={{
                                 backgroundColor: message.sender === 'user' ? '#000000' : '#000000',
                                 color: '#ffffff',
@@ -139,7 +226,6 @@ const ChatBox = ({ onClose }) => {
                             }}>
                                 {message.text}
                             </div>
-
                             {message.sender === 'user' && (
                                 <div style={{
                                     width: '36px',
@@ -156,7 +242,6 @@ const ChatBox = ({ onClose }) => {
                                 </div>
                             )}
                         </div>
-
                         {message.sender === 'bot' && (
                             <div style={{
                                 marginLeft: '44px',
@@ -172,6 +257,30 @@ const ChatBox = ({ onClose }) => {
                                     fontSize: '14px'
                                 }}>✨</span>
                                 Answered by AI
+                            </div>
+                        )}
+                        {/* Render carousel if available */}
+                        {message.carousel && (
+                            <div style={{
+                                display: 'flex',
+                                overflowX: 'auto',
+                                marginTop: '10px',
+                                padding: '5px',
+                            }}>
+                                {message.carousel.map((imgSrc, idx) => (
+                                    <img
+                                        key={idx}
+                                        src={imgSrc}
+                                        alt={`Recommendation ${idx + 1}`}
+                                        style={{
+                                            width: '80px',
+                                            height: '80px',
+                                            borderRadius: '8px',
+                                            marginRight: '10px',
+                                            objectFit: 'cover',
+                                        }}
+                                    />
+                                ))}
                             </div>
                         )}
                     </div>

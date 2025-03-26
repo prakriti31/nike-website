@@ -41,7 +41,7 @@ app.use('/api/products', require('./routes/product'));
 app.use('/api/categories', require('./routes/categories'));  // New categories route
 app.use('/api/cart', require('./routes/cart'));  // New cart routes
 app.use('/api/orders', require('./routes/orders'));  // Add the new orders route
-app.use('/api/ai', aiRouter);
+// app.use('/api/ai', require('./routes/ai'));
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
