@@ -5,7 +5,8 @@ const Category = require('../models/Category');
 // GET /api/categories/men
 router.get('/men', async (req, res) => {
     try {
-        const categories = await Category.find({ gender: 'men' }).populate('products');
+        // Find categories where gender is 'Men'
+        const categories = await Category.find({ gender: 'Men' });
         res.json(categories);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -15,7 +16,8 @@ router.get('/men', async (req, res) => {
 // GET /api/categories/women
 router.get('/women', async (req, res) => {
     try {
-        const categories = await Category.find({ gender: 'women' }).populate('products');
+        // Find categories where gender is 'women'
+        const categories = await Category.find({ gender: 'women' });
         res.json(categories);
     } catch (err) {
         res.status(500).json({ message: err.message });

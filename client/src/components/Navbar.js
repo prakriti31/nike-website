@@ -66,6 +66,7 @@ const Navbar = ({ user, onLogout }) => {
                 <Link to="/wishlist">
                     <FaHeart size={20} style={{ color: 'black' }} />
                 </Link>
+                {/* Ensure that the Link is pointing to the correct cart page route */}
                 <Link to="/bag">
                     <FaShoppingBag size={20} style={{ color: 'black' }} />
                 </Link>

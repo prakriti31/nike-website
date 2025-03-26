@@ -73,13 +73,21 @@ router.get('/cart/:userId', async (req, res) => {
     }
 });
 
+// GET /api/products
+// Fetch products filtered by the category type (i.e. category name) and optional limit.
 router.get('/', async (req, res) => {
+    const { type, limit } = req.query;  // 'type' corresponds to the category name (e.g., "Sneakers")
+    const query = {};
+    if (type) {
+        query.type = type;
+    }
     try {
-        const { category, limit } = req.query;
-        const query = category ? { category } : {};
-        const products = await Product.find(query)
-            .limit(parseInt(limit) || 0)
-            .populate('category');
+        let productsQuery = Product.find(query);
+        if (limit) {
+            productsQuery = productsQuery.limit(parseInt(limit, 10));
+        }
+        const products = await productsQuery;
+        console.log("RISHABH", products);
         res.json(products);
     } catch (err) {
         res.status(500).json({ message: err.message });

@@ -61,7 +61,7 @@ const App = () => {
                     <Route path="/women" element={<WomenPage />} />  {/* Route for WomenPage */}
                     <Route path="/men" element={<MenPage />} />      {/* Route for MenPage */}
                     <Route path="/wishlist" element={<WishlistPage />} /> {/* Route for WishlistPage */}
-                    <Route path="/cart" element={<CartPage />} />   {/* Route for CartPage */}
+                    <Route path="/bag" element={<CartPage />} />   {/* Route for CartPage */}
                 </Routes>
             </div>
         </Router>

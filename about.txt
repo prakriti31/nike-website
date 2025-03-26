@@ -66,3 +66,316 @@ nike-website/
     │   └── product.js         # Endpoints for products, categories, cart and wishlist
     └── middleware/
         └── authMiddleware.js  # JWT verification middleware
+
+
+
+nikeDB> db.users.find().pretty()
+...
+[
+  {
+    _id: ObjectId('67e350e9210afe2e2eb6e96b'),
+    username: 'johnDoe',
+    email: 'john@example.com',
+    password: 'hashedpassword',
+    createdAt: ISODate('2025-03-26T00:57:13.102Z')
+  },
+  {
+    _id: ObjectId('67e392ae261aca8b2d546ffe'),
+    username: 'Prakriti',
+    email: 'prakriti@gmail.com',
+    password: '$2a$10$InlHexRUCG1jOG9dFrTMQupRi4CGiSIr55uek06MSFX8R4fWoCKsO',
+    createdAt: ISODate('2025-03-26T05:37:50.808Z'),
+    __v: 0
+  }
+]
+nikeDB> db.categories.insertMany([
+...   { name: "Jordan", gender: "men" },
+...   { name: "Lifestyle", gender: "men" },
+...   { name: "Running", gender: "men" },
+...   { name: "Training & Gym", gender: "men" },
+...   { name: "Casual", gender: "men" },
+... ]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('67e395c8210afe2e2eb6e96d'),
+    '1': ObjectId('67e395c8210afe2e2eb6e96e'),
+    '2': ObjectId('67e395c8210afe2e2eb6e96f'),
+    '3': ObjectId('67e395c8210afe2e2eb6e970'),
+    '4': ObjectId('67e395c8210afe2e2eb6e971')
+  }
+}
+nikeDB> db.categories.insertMany([
+...   { name: "Lifestyle", gender: "women" },
+...   { name: "Running", gender: "women" },
+...   { name: "Training & Gym", gender: "women" },
+...   { name: "Casual", gender: "women" },
+...   { name: "Fashion", gender: "women" },
+... ]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('67e395e1210afe2e2eb6e972'),
+    '1': ObjectId('67e395e1210afe2e2eb6e973'),
+    '2': ObjectId('67e395e1210afe2e2eb6e974'),
+    '3': ObjectId('67e395e1210afe2e2eb6e975'),
+    '4': ObjectId('67e395e1210afe2e2eb6e976')
+  }
+}
+nikeDB> // Insert products for Men
+... db.products.insertMany([
+...   {
+...     name: "Air Jordan 1",
+...     description: "Classic sneaker for basketball.",
+...     price: 120,
+...     category: ObjectId("Men_Category_Id"), // Replace with actual Category ID for 'Jordan'
+...     gender: "men",
+...     image: "link_to_image_1"
+...   },
+...   {
+...     name: "Nike Lifestyle Shoe",
+...     description: "Casual wear sneaker.",
+...     price: 100,
+...     category: ObjectId("Men_Category_Id"), // Replace with actual Category ID for 'Lifestyle'
+...     gender: "men",
+...     image: "link_to_image_2"
+...   },
+...   {
+...     name: "Nike Running Shoe",
+...     description: "Performance running shoe.",
+...     price: 90,
+...     category: ObjectId("Men_Category_Id"), // Replace with actual Category ID for 'Running'
+...     gender: "men",
+...     image: "link_to_image_3"
+...   }
+... ]);
+BSONError: input must be a 24 character hex string, 12 byte Uint8Array, or an integer
+nikeDB> // Insert products for Men
+... db.products.insertMany([
+...   {
+...     name: "Air Jordan 1",
+...     description: "Classic sneaker for basketball.",
+...     price: 120,
+...     category: ObjectId("605c72ef1532071a3f7a3a1"),  // Replace with actual ObjectId for 'Jordan'
+...     gender: "men",
+...     image: "link_to_image_1"
+...   },
+...   {
+...     name: "Nike Lifestyle Shoe",
+...     description: "Casual wear sneaker.",
+...     price: 100,
+...     category: ObjectId("605c72ef1532071a3f7a3a2"),  // Replace with actual ObjectId for 'Lifestyle'
+...     gender: "men",
+...     image: "link_to_image_2"
+...   },
+...   {
+...     name: "Nike Running Shoe",
+...     description: "Performance running shoe.",
+...     price: 90,
+...     category: ObjectId("605c72ef1532071a3f7a3a3"),  // Replace with actual ObjectId for 'Running'
+...     gender: "men",
+...     image: "link_to_image_3"
+...   }
+... ]);
+...
+BSONError: input must be a 24 character hex string, 12 byte Uint8Array, or an integer
+nikeDB> db.categories.insertMany([
+...   { name: "Jordan", gender: "men" },
+...   { name: "Lifestyle", gender: "men" },
+...   { name: "Running", gender: "men" },
+...   { name: "Basketball", gender: "men" },
+...   { name: "Training & Gym", gender: "men" },
+...   { name: "Walking", gender: "men" },
+...   { name: "Soccer", gender: "men" },
+...   { name: "Skateboarding", gender: "men" },
+...   { name: "ACG", gender: "men" },
+...   { name: "Football", gender: "men" },
+...   { name: "Tennis", gender: "men" },
+...   { name: "Golf", gender: "men" },
+...   { name: "Baseball", gender: "men" },
+...   { name: "Boots", gender: "men" },
+...   { name: "Sandals & Slides", gender: "men" },
+...   { name: "Track & Field", gender: "men" },
+...   { name: "Nike By You", gender: "men" },
+...   { name: "Lacrosse", gender: "men" },
+...   { name: "Wrestling", gender: "men" }
+... ]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('67e3965d210afe2e2eb6e977'),
+    '1': ObjectId('67e3965d210afe2e2eb6e978'),
+    '2': ObjectId('67e3965d210afe2e2eb6e979'),
+    '3': ObjectId('67e3965d210afe2e2eb6e97a'),
+    '4': ObjectId('67e3965d210afe2e2eb6e97b'),
+    '5': ObjectId('67e3965d210afe2e2eb6e97c'),
+    '6': ObjectId('67e3965d210afe2e2eb6e97d'),
+    '7': ObjectId('67e3965d210afe2e2eb6e97e'),
+    '8': ObjectId('67e3965d210afe2e2eb6e97f'),
+    '9': ObjectId('67e3965d210afe2e2eb6e980'),
+    '10': ObjectId('67e3965d210afe2e2eb6e981'),
+    '11': ObjectId('67e3965d210afe2e2eb6e982'),
+    '12': ObjectId('67e3965d210afe2e2eb6e983'),
+    '13': ObjectId('67e3965d210afe2e2eb6e984'),
+    '14': ObjectId('67e3965d210afe2e2eb6e985'),
+    '15': ObjectId('67e3965d210afe2e2eb6e986'),
+    '16': ObjectId('67e3965d210afe2e2eb6e987'),
+    '17': ObjectId('67e3965d210afe2e2eb6e988'),
+    '18': ObjectId('67e3965d210afe2e2eb6e989')
+  }
+}
+nikeDB> db.categories.insertMany([
+...   { name: "Lifestyle", gender: "women" },
+...   { name: "Running", gender: "women" },
+...   { name: "Training & Gym", gender: "women" },
+...   { name: "Jordan", gender: "women" },
+...   { name: "Basketball", gender: "women" },
+...   { name: "Soccer", gender: "women" },
+...   { name: "Golf", gender: "women" },
+...   { name: "Tennis", gender: "women" },
+...   { name: "Track & Field", gender: "women" },
+...   { name: "Volleyball", gender: "women" },
+...   { name: "Walking", gender: "women" },
+...   { name: "Sandals & Slides", gender: "women" },
+...   { name: "Skateboarding", gender: "women" },
+...   { name: "Nike By You", gender: "women" }
+... ]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('67e3966c210afe2e2eb6e98a'),
+    '1': ObjectId('67e3966c210afe2e2eb6e98b'),
+    '2': ObjectId('67e3966c210afe2e2eb6e98c'),
+    '3': ObjectId('67e3966c210afe2e2eb6e98d'),
+    '4': ObjectId('67e3966c210afe2e2eb6e98e'),
+    '5': ObjectId('67e3966c210afe2e2eb6e98f'),
+    '6': ObjectId('67e3966c210afe2e2eb6e990'),
+    '7': ObjectId('67e3966c210afe2e2eb6e991'),
+    '8': ObjectId('67e3966c210afe2e2eb6e992'),
+    '9': ObjectId('67e3966c210afe2e2eb6e993'),
+    '10': ObjectId('67e3966c210afe2e2eb6e994'),
+    '11': ObjectId('67e3966c210afe2e2eb6e995'),
+    '12': ObjectId('67e3966c210afe2e2eb6e996'),
+    '13': ObjectId('67e3966c210afe2e2eb6e997')
+  }
+}
+nikeDB> var jordanMen = db.categories.findOne({ name: "Jordan", gender: "men" })._id;
+...
+
+nikeDB> var lifestyleMen = db.categories.findOne({ name: "Lifestyle", gender: "men" })._id;
+...
+
+nikeDB> db.products.insertMany([
+...   {
+...     name: "Air Jordan 1",
+...     description: "Classic sneaker for basketball.",
+...     price: 120,
+...     category: jordanMen,
+...     gender: "men",
+...     image: "link_to_image_1"
+...   },
+...   {
+...     name: "Nike Lifestyle Shoe",
+...     description: "Casual wear sneaker.",
+...     price: 100,
+...     category: lifestyleMen,
+...     gender: "men",
+...     image: "link_to_image_2"
+...   },
+...   {
+...     name: "Nike Running Shoe",
+...     description: "High-performance running shoe.",
+...     price: 110,
+...     category: lifestyleMen,
+...     gender: "men",
+...     image: "link_to_image_3"
+...   }]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('67e3969a210afe2e2eb6e998'),
+    '1': ObjectId('67e3969a210afe2e2eb6e999'),
+    '2': ObjectId('67e3969a210afe2e2eb6e99a')
+  }
+}
+nikeDB> var lifestyleWomen = db.categories.findOne({ name: "Lifestyle", gender: "women" })._id;
+...
+
+nikeDB> var runningWomen = db.categories.findOne({ name: "Running", gender: "women" })._id;
+...
+
+nikeDB> db.products.insertMany([
+...   {
+...     name: "Nike Running Shoe",
+...     description: "High-performance running shoe.",
+...     price: 90,
+...     category: runningWomen,
+...     gender: "women",
+...     image: "link_to_image_1"
+...   },
+...   {
+...     name: "Nike Training Shoe",
+...     description: "Training shoe with great support.",
+...     price: 110,
+...     category: lifestyleWomen,
+...     gender: "women",
+...     image: "link_to_image_2"
+...   },
+...   {
+...     name: "Nike Lifestyle Shoe",
+...     description: "Comfortable casual sneaker.",
+...     price: 105,
+...     category: lifestyleWomen,
+...     gender: "women",
+...     image: "link_to_image_3"
+...   }]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('67e396b8210afe2e2eb6e99b'),
+    '1': ObjectId('67e396b8210afe2e2eb6e99c'),
+    '2': ObjectId('67e396b8210afe2e2eb6e99d')
+  }
+}
+nikeDB> // Check categories for men
+... db.categories.find({ gender: "men" }).pretty();
+...
+... // Check categories for women
+... db.categories.find({ gender: "women" }).pretty();
+...
+... // Check products for men
+... db.products.find({ gender: "men" }).pretty();
+...
+... // Check products for women
+... db.products.find({ gender: "women" }).pretty();
+...
+[
+  {
+    _id: ObjectId('67e396b8210afe2e2eb6e99b'),
+    name: 'Nike Running Shoe',
+    description: 'High-performance running shoe.',
+    price: 90,
+    category: ObjectId('67e395e1210afe2e2eb6e973'),
+    gender: 'women',
+    image: 'link_to_image_1'
+  },
+  {
+    _id: ObjectId('67e396b8210afe2e2eb6e99c'),
+    name: 'Nike Training Shoe',
+    description: 'Training shoe with great support.',
+    price: 110,
+    category: ObjectId('67e395e1210afe2e2eb6e972'),
+    gender: 'women',
+    image: 'link_to_image_2'
+  },
+  {
+    _id: ObjectId('67e396b8210afe2e2eb6e99d'),
+    name: 'Nike Lifestyle Shoe',
+    description: 'Comfortable casual sneaker.',
+    price: 105,
+    category: ObjectId('67e395e1210afe2e2eb6e972'),
+    gender: 'women',
+    image: 'link_to_image_3'
+  }
+]
+nikeDB>
