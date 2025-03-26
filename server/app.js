@@ -37,6 +37,8 @@ app.use(session({
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/products', require('./routes/product'));
+app.use('/api/categories', require('./routes/categories'));  // New categories route
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

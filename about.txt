@@ -58,7 +58,7 @@ nike-website/
     ├── models/
     │   ├── User.js            # User schema (for login, signup)
     │   ├── Product.js         # Product schema (for shoes)
-    │   ├── Category.js        # Categories such as Men, Women, Jordans, etc.
+    │   ├── Categories.js        # Categories such as Men, Women, Jordans, etc.
     │   ├── Cart.js            # Cart schema (add to cart functionality)
     │   └── Wishlist.js        # Wishlist schema (wishlist functionality)
     ├── routes/

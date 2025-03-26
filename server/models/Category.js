@@ -7,4 +7,5 @@ const categorySchema = new mongoose.Schema({
     products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }]  // Array of product references
 });
 
+
 module.exports = mongoose.model('Category', categorySchema);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Footer from "./components/Footer";
 import BottomBanner from "./components/BottomBanner";
 import NikeBanner from "./components/NikeBanner";
@@ -9,6 +9,10 @@ import MidSection from "./components/MidSection";
 import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import WomenPage from "./pages/WomenPage";  // New WomenPage
+import MenPage from "./pages/MenPage";      // New MenPage
+import WishlistPage from "./pages/Wishlist"; // New WishlistPage
+import CartPage from "./pages/Cart";  // New CartPage
 import axios from "axios";
 
 const App = () => {
@@ -54,6 +58,10 @@ const App = () => {
                     } />
                     <Route path="/login" element={<Login setUser={setUser} />} />
                     <Route path="/signup" element={<Signup />} />
+                    <Route path="/women" element={<WomenPage />} />  {/* Route for WomenPage */}
+                    <Route path="/men" element={<MenPage />} />      {/* Route for MenPage */}
+                    <Route path="/wishlist" element={<WishlistPage />} /> {/* Route for WishlistPage */}
+                    <Route path="/cart" element={<CartPage />} />   {/* Route for CartPage */}
                 </Routes>
             </div>
         </Router>

@@ -73,4 +73,17 @@ router.get('/cart/:userId', async (req, res) => {
     }
 });
 
+router.get('/', async (req, res) => {
+    try {
+        const { category, limit } = req.query;
+        const query = category ? { category } : {};
+        const products = await Product.find(query)
+            .limit(parseInt(limit) || 0)
+            .populate('category');
+        res.json(products);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
 module.exports = router;
