@@ -1,27 +1,62 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Banner from './components/Banner';
-import MidSection from './components/MidSection';
-import BoxSection from './components/BoxSection';
-import Footer from './components/Footer';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Footer from "./components/Footer";
+import BottomBanner from "./components/BottomBanner";
+import NikeBanner from "./components/NikeBanner";
+import BoxSection from "./components/BoxSection";
+import Banner from "./components/Banner";
+import MidSection from "./components/MidSection";
+import Navbar from "./components/Navbar";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import axios from "axios";
 
 const App = () => {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const res = await axios.get('http://localhost:5000/api/auth/user', { withCredentials: true });
+                if (res.data.user) {
+                    setUser(res.data.user);
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchUser();
+    }, []);
+
+    const handleLogout = async () => {
+        try {
+            await axios.get('http://localhost:5000/api/auth/logout', { withCredentials: true });
+            setUser(null);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
     return (
-        <div style={{ background: 'white', color: 'black' }}>
-            <Navbar />
-            <Banner />
-            <MidSection />
-            <BoxSection />
-            <Footer />
-            <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                {/* Add more routes as needed */}
-            </Routes>
-        </div>
+        <Router>
+            <div style={{ background: 'white', color: 'black' }}>
+                <Navbar user={user} onLogout={handleLogout} />
+                <Routes>
+                    <Route path="/" element={
+                        <>
+                            <Banner />
+                            <MidSection />
+                            <BoxSection />
+                            <NikeBanner />
+                            <BottomBanner />
+                            <Footer />
+                        </>
+                    } />
+                    <Route path="/login" element={<Login setUser={setUser} />} />
+                    <Route path="/signup" element={<Signup />} />
+                </Routes>
+            </div>
+        </Router>
     );
 };
 

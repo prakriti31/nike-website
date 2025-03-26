@@ -1,65 +1,79 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
+const User = require('../models/User');
 
-// @route   POST api/auth/signup
-// @desc    Signup new user
-// @access  Public
-router.post('/signup', async (req, res) => {
-    const { username, email, password } = req.body;
+// POST /api/auth/login
+router.post('/login', async (req, res) => {
     try {
-        let user = await User.findOne({ email });
-        if(user) {
-            return res.status(400).json({ msg: 'User already exists' });
-        }
-        user = new User({ username, email, password });
+        const { email, password } = req.body;
 
-        // Hash password
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(password, salt);
+        // Find user by email
+        const user = await User.findOne({ email });
+        if (!user) return res.status(400).json({ msg: 'Invalid credentials' });
 
-        await user.save();
+        // Compare password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
 
-        // Return JWT
-        const payload = { user: { id: user.id } };
-        jwt.sign(payload, process.env.JWT_SECRET || 'secretKey', { expiresIn: 360000 },
-            (err, token) => {
-                if(err) throw err;
-                res.json({ token });
-            }
-        );
-    } catch(err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+        // Save user info in session
+        req.session.user = {
+            id: user._id,
+            username: user.username,
+            email: user.email,
+        };
+
+        res.json({
+            msg: 'Login successful',
+            user: req.session.user
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ msg: 'Server error' });
     }
 });
 
-// @route   POST api/auth/login
-// @desc    Authenticate user & get token
-// @access  Public
-router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
+// GET /api/auth/user - return session user if authenticated
+router.get('/user', (req, res) => {
+    if (req.session && req.session.user) {
+        return res.json({ user: req.session.user });
+    }
+    return res.status(401).json({ msg: 'Not authenticated' });
+});
+
+// GET /api/auth/logout
+router.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).json({ msg: 'Could not log out' });
+        }
+        res.json({ msg: 'Logout successful' });
+    });
+});
+
+// POST /api/auth/signup
+router.post('/signup', async (req, res) => {
     try {
+        const { username, email, password } = req.body;
+
+        // Check if user already exists
         let user = await User.findOne({ email });
-        if(!user) {
-            return res.status(400).json({ msg: 'Invalid Credentials' });
+        if (user) {
+            return res.status(400).json({ msg: 'User already exists' });
         }
-        const isMatch = await bcrypt.compare(password, user.password);
-        if(!isMatch) {
-            return res.status(400).json({ msg: 'Invalid Credentials' });
-        }
-        const payload = { user: { id: user.id } };
-        jwt.sign(payload, process.env.JWT_SECRET || 'secretKey', { expiresIn: 360000 },
-            (err, token) => {
-                if(err) throw err;
-                res.json({ token });
-            }
-        );
-    } catch(err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+
+        // Create new user
+        user = new User({ username, email, password });
+        // Hash password
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(password, salt);
+        await user.save();
+
+        res.json({ msg: 'Signup successful, please login' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ msg: 'Server error' });
     }
 });
 
