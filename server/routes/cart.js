@@ -1,38 +1,54 @@
 const express = require('express');
 const router = express.Router();
-const Cart = require('../models/Cart');
+
 
 // POST /api/cart/add
 // Adds a product to the user's cart. If the cart does not exist, create it.
-router.post('/add', async (req, res) => {
-    const { userId, productId } = req.body;
+router.post('/api/cart/remove', async (req, res) => {
     try {
-        let cart = await Cart.findOne({ userId });
+        const { userId, productId } = req.body;
+        const cart = await Cart.findOne({ userId: userId });
+
         if (!cart) {
-            cart = new Cart({ userId, products: [] });
+            return res.status(404).send('Cart not found');
         }
-        // Optionally: prevent duplicate product entries
-        if (!cart.products.includes(productId)) {
-            cart.products.push(productId);
-        }
+
+        // Remove product from cart
+        cart.products = cart.products.filter(product => !product.equals(productId));
         await cart.save();
-        res.json({ message: 'Product added to cart', cart });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+
+        res.json(cart);
+    } catch (err) {
+        res.status(500).send('Server error');
     }
 });
 
+
 // GET /api/cart/:userId
-router.get('/api/cart/:userId', (req, res) => {
-    Cart.findOne({ userId: req.params.userId })
-        .populate('products') // Populating product details
-        .then(cart => {
-            res.json(cart);
-        })
-        .catch(err => {
-            res.status(500).json({ message: 'Error fetching cart', error: err });
-        });
+const Cart = require('../models/Cart'); // Your Cart model
+
+router.get('/api/cart', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1]; // Extract the token from the Authorization header
+    console.log('Token:', token); // Debugging log
+
+    if (!token) {
+        return res.status(403).send('Access denied, no token provided.');
+    }
+
+    try {
+        const decoded = jwt.verify(token, 'your_jwt_secret'); // Replace 'your_jwt_secret' with your secret key
+        const userId = decoded.userId; // Assuming your token contains the userId
+
+        const cart = await Cart.findOne({ userId }).populate('products');
+        if (!cart) {
+            return res.status(404).send('Cart not found');
+        }
+        res.json(cart);
+    } catch (err) {
+        res.status(500).send('Failed to authenticate token');
+    }
 });
+
 
 // DELETE /api/cart/remove
 // Removes a product from the user's cart

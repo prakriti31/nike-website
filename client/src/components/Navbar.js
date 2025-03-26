@@ -60,7 +60,7 @@ const Navbar = ({ user, onLogout }) => {
                 <Link to="/kids" style={linkStyle}>Kids</Link>
                 <Link to="/jordans" style={linkStyle}>Jordans</Link>
                 <Link to="/sport" style={linkStyle}>Sport</Link>
-                <Link to="/new" style={linkStyle}>NEW</Link>
+                <Link to="/orders" style={linkStyle}>Orders</Link>
             </div>
             <div style={rightStyle}>
                 <Link to="/wishlist">

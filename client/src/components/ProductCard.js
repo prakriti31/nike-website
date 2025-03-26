@@ -1,18 +1,23 @@
 import React from 'react';
-import axios from 'axios';
 
-const ProductCard = ({ product, userId }) => {
-    const addToCart = () => {
-        axios.post('http://localhost:5001/api/cart/add', { productId: product._id, userId })
-            .then(response => alert('Product added to cart'))
-            .catch(err => console.error(err));
+const ProductCard = ({ product, userId, addToCart }) => {
+    const handleAddToCart = () => {
+        addToCart(product._id);
     };
 
     const addToWishlist = () => {
-        // Wishlist functionality assumed to be similar; placeholder here
-        axios.post('http://localhost:5001/api/products/add-to-wishlist', { productId: product._id, userId })
-            .then(response => alert('Product added to wishlist'))
-            .catch(err => console.error(err));
+        alert('Product added to wishlist');
+    };
+
+    const buttonStyle = {
+        border: '2px solid black',
+        borderRadius: '25px',
+        padding: '8px 20px',
+        fontFamily: '"Montserrat", sans-serif',
+        backgroundColor: 'white',
+        color: 'black',
+        cursor: 'pointer',
+        transition: 'all 0.3s ease',
     };
 
     return (
@@ -21,8 +26,8 @@ const ProductCard = ({ product, userId }) => {
             <h3>{product.name}</h3>
             <p>{product.description}</p>
             <p>${product.price}</p>
-            <button onClick={addToCart}>Add to Cart</button>
-            <button onClick={addToWishlist}>Add to Wishlist</button>
+            <button onClick={handleAddToCart} style={buttonStyle}>Add to Cart</button>
+            <button onClick={addToWishlist} style={buttonStyle}>Add to Wishlist</button>
         </div>
     );
 };

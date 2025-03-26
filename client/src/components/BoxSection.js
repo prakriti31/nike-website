@@ -72,9 +72,7 @@ const BoxSection = () => {
                         <div style={{ fontSize: '20px' }}>{box.line1}</div>
                         <div style={{ fontSize: '30px' }}>{box.line2}</div>
                         <button
-                            style={buttonStyle}
-                            onMouseEnter={(e) => e.target.style = { ...buttonStyle, ...buttonHoverStyle }}
-                            onMouseLeave={(e) => e.target.style = buttonStyle}>
+                            style={buttonStyle} >
                             SHOP
                         </button>
                     </div>

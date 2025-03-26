@@ -1,3 +1,5 @@
+// src/App.js
+
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Footer from "./components/Footer";
@@ -14,6 +16,8 @@ import MenPage from "./pages/MenPage";      // New MenPage
 import WishlistPage from "./pages/Wishlist"; // New WishlistPage
 import CartPage from "./pages/Cart";  // New CartPage
 import axios from "axios";
+import OrdersPage from "./pages/Orders";
+import ChatButton from './components/ChatButton';  // Import ChatButton
 
 const App = () => {
     const [user, setUser] = useState(null);
@@ -60,9 +64,11 @@ const App = () => {
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/women" element={<WomenPage />} />  {/* Route for WomenPage */}
                     <Route path="/men" element={<MenPage />} />      {/* Route for MenPage */}
+                    <Route path="/orders" element={<OrdersPage/>} />
                     <Route path="/wishlist" element={<WishlistPage />} /> {/* Route for WishlistPage */}
                     <Route path="/bag" element={<CartPage />} />   {/* Route for CartPage */}
                 </Routes>
+                <ChatButton />  {/* Include the chat button */}
             </div>
         </Router>
     );

@@ -94,4 +94,17 @@ router.get('/', async (req, res) => {
     }
 });
 
+// Add to Product model (server/models/Product.js)
+// const productSchema = new Schema({
+//     name: String,
+//     description: String,
+//     category: String,
+//     embedding: {
+//         type: [Number],
+//         index: 'vector',
+//         dimensions: 1536
+//     }
+// });
+
+
 module.exports = router;

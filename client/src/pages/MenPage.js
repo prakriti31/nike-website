@@ -49,22 +49,8 @@ const MenPage = () => {
         fetchProducts();
     }, [selectedCategoryId]);
 
-    const addToCart = async (productId) => {
-        if (!userId) {
-            alert('Please log in to add items to your cart.');
-            return;
-        }
-        try {
-            const response = await axios.post('http://localhost:5001/api/cart/add', {
-                userId: userId,
-                productId: productId,
-            });
-            console.log(response.data);
-            alert('Product added to cart');
-        } catch (err) {
-            console.error(err);
-            alert('Failed to add product to cart');
-        }
+    const addToCart = (productId) => {
+        alert('Item added to cart!');
     };
 
     if (loading) return <div>Loading...</div>;
@@ -106,8 +92,8 @@ const MenPage = () => {
                             <ProductCard
                                 key={product._id}
                                 product={product}
-                                userId={userId} // Pass userId here
-                                addToCart={addToCart} // Pass addToCart function here
+                                userId={userId}
+                                addToCart={addToCart}
                             />
                         ))
                     ) : (
