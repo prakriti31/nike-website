@@ -1,0 +1,68 @@
+// Switch to your database
+use nikeDB
+
+// Create sample categories
+db.categories.insertMany([
+  { name: "Men" },
+  { name: "Women" },
+  { name: "Kids" },
+  { name: "Jordans" },
+  { name: "Sport" },
+  { name: "NEW" }
+]);
+
+// Create a sample user (password should be stored hashed in production)
+db.users.insertOne({
+  username: "johnDoe",
+  email: "john@example.com",
+  password: "hashedpassword",  // hash this using bcrypt in your app!
+  createdAt: new Date()
+});
+
+// Create a sample product
+db.products.insertOne({
+  name: "Nike Air Zoom",
+  description: "High performance running shoe",
+  price: 120,
+  category: "Men",
+  image: "https://example.com/nike-air-zoom.jpg",
+  createdAt: new Date()
+});
+
+
+
+
+
+nike-website/
+├── client/                    # React frontend
+│   ├── package.json
+│   ├── public/
+│   │   └── index.html
+│   └── src/
+│       ├── components/
+│       │   ├── Navbar.js         # Top bar with Nike logo, wishlist, add to cart, navigation links
+│       │   ├── Banner.js         # Horizontal picture below navigation
+│       │   ├── MidSection.js     # Section with “Mallory Swanson” texts, description and Shop button
+│       │   ├── BoxSection.js     # 4 boxes with texts and individual SHOP buttons
+│       │   └── Footer.js         # Copyright text and login/signup buttons
+│       ├── pages/
+│       │   ├── Login.js         # Login page with JWT handling
+│       │   └── Signup.js        # Signup page with JWT handling
+│       ├── App.js
+│       └── index.js
+└── server/                    # Node/Express backend
+    ├── package.json
+    ├── app.js                 # Main server file
+    ├── config/
+    │   └── db.js              # MongoDB connection using Mongoose
+    ├── models/
+    │   ├── User.js            # User schema (for login, signup)
+    │   ├── Product.js         # Product schema (for shoes)
+    │   ├── Category.js        # Categories such as Men, Women, Jordans, etc.
+    │   ├── Cart.js            # Cart schema (add to cart functionality)
+    │   └── Wishlist.js        # Wishlist schema (wishlist functionality)
+    ├── routes/
+    │   ├── auth.js            # Login and signup endpoints
+    │   └── product.js         # Endpoints for products, categories, cart and wishlist
+    └── middleware/
+        └── authMiddleware.js  # JWT verification middleware
